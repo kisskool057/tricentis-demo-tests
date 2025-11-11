@@ -1,1 +1,2 @@
-ceci est un essai de lien entre VS code / GitHub et Jira
+ceci est un essai de lien entre VS code / GitHub et Jira 
+à voir si cela fonctionne 
