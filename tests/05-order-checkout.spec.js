@@ -1,4 +1,4 @@
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('../test-fixtures');
 const { createAccount, login, clearCart, wait, addProductToCart } = require('../utils/helpers');
 const { markTestStart, markTestResult } = require('../utils/browserstack');
 

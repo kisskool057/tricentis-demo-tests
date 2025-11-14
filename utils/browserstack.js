@@ -61,4 +61,4 @@ async function markTestResult(page, testInfo) {
   });
 }
 
-module.exports = { markTestStart, markTestResult, isBrowserStackRun };
+module.exports = { markTestStart, markTestResult, isBrowserStackRun, formatTestName, getTitlePathArray };

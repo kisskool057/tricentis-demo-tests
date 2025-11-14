@@ -1,4 +1,4 @@
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('../test-fixtures');
 const { generateUserData, login, logout } = require('../utils/helpers');
 const { markTestStart, markTestResult } = require('../utils/browserstack');
 
