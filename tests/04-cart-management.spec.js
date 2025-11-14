@@ -1,13 +1,16 @@
 const { test, expect } = require('@playwright/test');
 const { wait, clearCart, getCartItemCount, addProductToCart } = require('../utils/helpers');
+const { markTestStart, markTestResult } = require('../utils/browserstack');
 
 test.describe('Tests de gestion du panier', () => {
 
-  test.afterEach(async ({ page }) => {
+  test.afterEach(async ({ page }, testInfo) => {
+    await markTestResult(page, testInfo);
     try { await page.context().close(); } catch (e) {}
   });
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo) => {
+    await markTestStart(page, testInfo);
     // Vider le panier avant chaque test
     await clearCart(page);
   });

@@ -61,7 +61,7 @@ npx playwright test tests/01-account-creation.spec.js --config=playwright.config
 1. Connectez-vous à [BrowserStack Automate](https://automate.browserstack.com/)
 2. Cherchez le build **"TRICENTIS-DEMO-TESTS"**
 3. Vous verrez vos tests avec :
-   - **Nom spécifique** de chaque test (ex: "Test 1: Création de compte utilisateur - Cas passant ✅")
+   - **Nom spécifique** de chaque test (ex: "Tests de connexion et déconnexion › Test 3: Connexion utilisateur - Cas passant ✅")
    - **Statut de réussite/échec** : Automatiquement mis à jour pour chaque test
    - Vidéos des exécutions
    - Logs de la console
@@ -71,14 +71,12 @@ npx playwright test tests/01-account-creation.spec.js --config=playwright.config
 
 ### Statuts des tests
 
-BrowserStack affiche automatiquement le bon statut pour chaque test grâce au SDK officiel (`browserstack-node-sdk`). 
+Les hooks `beforeEach/afterEach` présents dans chaque fichier de test appellent `markTestStart` et `markTestResult` (définis dans `utils/browserstack.js`).
 
-Les statuts possibles :
-- ✅ **Passed** : Test réussi
-- ❌ **Failed** : Test échoué avec détails de l'erreur
-- ⏸️ **Skipped** : Test ignoré
+- `markTestStart` envoie `browserstack_executor: { action: "setSessionName", ... }` avec le nom complet du test
+- `markTestResult` envoie `browserstack_executor: { action: "setSessionStatus", ... }` avec le statut `passed/failed` et le message d'erreur
 
-Le SDK communique automatiquement avec l'API BrowserStack pour mettre à jour ces statuts à la fin de chaque test.
+Ces commandes officielles BrowserStack garantissent que le dashboard affiche le nom exact de chaque test ainsi que son résultat.
 
 ## Configuration avancée
 

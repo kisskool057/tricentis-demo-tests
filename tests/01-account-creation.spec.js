@@ -1,8 +1,14 @@
 const { test, expect } = require('@playwright/test');
 const { generateUserData } = require('../utils/helpers');
+const { markTestStart, markTestResult } = require('../utils/browserstack');
 
 test.describe('Tests de création de compte', () => {
-  test.afterEach(async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo) => {
+    await markTestStart(page, testInfo);
+  });
+
+  test.afterEach(async ({ page }, testInfo) => {
+    await markTestResult(page, testInfo);
     // Fermer le context (ferme la fenêtre du navigateur pour ce test)
     try {
       await page.context().close();

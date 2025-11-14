@@ -17,14 +17,13 @@ Chaque test est maintenant identifié par son nom complet dans BrowserStack :
 - etc.
 
 **Fonctionnement :**
-Un reporter personnalisé (`browserstack-reporter.js`) met à jour automatiquement chaque session BrowserStack via l'API REST après l'exécution de chaque test. Le reporter :
-1. Récupère les sessions actives de BrowserStack
-2. Fait correspondre chaque test à sa session (par timing)
-3. Met à jour le nom et le statut via l'API REST
+Chaque test appelle automatiquement les helpers BrowserStack (via `markTestStart` & `markTestResult`) avant et après son exécution. Ces helpers envoient les commandes officielles `browserstack_executor` pour :
+1. Renommer la session avec le nom complet du test
+2. Mettre à jour le statut `passed/failed` avec le message d'erreur s'il y en a un
 
 **Fichiers impliqués :**
-- `browserstack-reporter.js` : Reporter personnalisé Playwright
-- `browserstack-utils.js` : Fonctions utilitaires pour l'API BrowserStack
+- `utils/browserstack.js` : fonctions `markTestStart/markTestResult`
+- Tous les fichiers de tests (`tests/*.spec.js`) utilisent ces helpers dans leurs hooks `beforeEach/afterEach`
 
 ### 3. **Exécution en Parallèle : 5 Tests Maximum**
 Les tests s'exécutent maintenant en parallèle avec un maximum de 5 tests simultanés.

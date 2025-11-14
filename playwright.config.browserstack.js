@@ -20,13 +20,6 @@ module.exports = defineConfig({
     headless: true,
   },
 
-  // Reporter personnalisé pour BrowserStack + reporters standards
-  reporter: [
-    ['list'],
-    ['html'],
-    ['./browserstack-reporter.js'],
-  ],
-
   // Configuration BrowserStack
   projects: [
     {

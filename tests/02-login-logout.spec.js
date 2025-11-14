@@ -1,10 +1,16 @@
 const { test, expect } = require('@playwright/test');
 const { generateUserData, login, logout } = require('../utils/helpers');
+const { markTestStart, markTestResult } = require('../utils/browserstack');
 
 test.describe('Tests de connexion et déconnexion', () => {
   let testUser;
 
-  test.afterEach(async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo) => {
+    await markTestStart(page, testInfo);
+  });
+
+  test.afterEach(async ({ page }, testInfo) => {
+    await markTestResult(page, testInfo);
     try {
       await page.context().close();
     } catch (e) {}
