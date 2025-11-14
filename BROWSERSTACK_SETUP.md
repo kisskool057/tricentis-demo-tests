@@ -56,11 +56,23 @@ npx playwright test tests/01-account-creation.spec.js --config=playwright.config
 
 1. Connectez-vous à [BrowserStack Automate](https://automate.browserstack.com/)
 2. Vous verrez vos tests avec :
+   - **Statut de réussite/échec** : Automatiquement mis à jour pour chaque test
    - Vidéos des exécutions
    - Logs de la console
    - Logs réseau
    - Captures d'écran
    - Métadonnées
+
+### Statuts des tests
+
+BrowserStack affiche automatiquement le bon statut pour chaque test grâce au SDK officiel (`browserstack-node-sdk`). 
+
+Les statuts possibles :
+- ✅ **Passed** : Test réussi
+- ❌ **Failed** : Test échoué avec détails de l'erreur
+- ⏸️ **Skipped** : Test ignoré
+
+Le SDK communique automatiquement avec l'API BrowserStack pour mettre à jour ces statuts à la fin de chaque test.
 
 ## Configuration avancée
 

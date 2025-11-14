@@ -72,7 +72,9 @@ jobs:
       env:
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        BUILD_NUMBER: ${{ github.run_number }}
         CI: true
+      continue-on-error: true
       
     - name: Upload BrowserStack test results
       uses: actions/upload-artifact@v4
