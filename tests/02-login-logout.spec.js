@@ -1,61 +1,76 @@
 const { test, expect } = require('@playwright/test');
-const { createAccount, login, logout } = require('../utils/helpers');
+const { generateUserData, login, logout } = require('../utils/helpers');
 
 test.describe('Tests de connexion et déconnexion', () => {
   let testUser;
 
-  // Créer un compte avant d'exécuter les tests
-  test.beforeAll(async ({ browser }) => {
-    const context = await browser.newContext();
-    const page = await context.newPage();
-    testUser = await createAccount(page);
-    
-    // Se déconnecter après la création
-    await logout(page);
-    
-    await context.close();
-    console.log(`✅ Compte de test créé: ${testUser.email}`);
-  });
-
   test('Test 3: Connexion utilisateur - Cas passant ✅', async ({ page }) => {
-    // Naviguer vers la page d'accueil
+    // Créer un compte (comme dans Test 1 de 01-account-creation.spec.js)
+    testUser = generateUserData();
+    
     await page.goto('/');
+    await page.locator('a.ico-register').click();
+    await expect(page).toHaveURL(/.*register/);
     
-    // Cliquer sur Log in
-    await page.locator('a.ico-login').click();
-    
-    // Vérifier que nous sommes sur la page de connexion
-    await expect(page).toHaveURL(/.*login/);
-    
-    // Remplir les identifiants
+    await page.locator('input#gender-male').check();
+    await page.locator('input#FirstName').fill(testUser.firstName);
+    await page.locator('input#LastName').fill(testUser.lastName);
     await page.locator('input#Email').fill(testUser.email);
     await page.locator('input#Password').fill(testUser.password);
+    await page.locator('input#ConfirmPassword').fill(testUser.password);
+    await page.locator('input#register-button').click();
     
-    // Cliquer sur Log in
-    await page.locator('.button-1.login-button').click();
+    await expect(page.locator('.result')).toContainText('Your registration completed');
+    await page.locator('.button-1.register-continue-button').click();
+    await expect(page).toHaveURL('/');
     
-    // Attendre la redirection
+    console.log(`✅ Compte créé avec succès: ${testUser.email}`);
+    
+    // Se déconnecter
+    await page.locator('a.ico-logout').click();
     await page.waitForLoadState('networkidle');
     
-    // Vérifier que nous sommes connectés
+    // Maintenant tester la connexion avec ce compte
+    await page.goto('/');
+    await page.locator('a.ico-login').click();
+    await expect(page).toHaveURL(/.*login/);
+    
+    await page.locator('input#Email').fill(testUser.email);
+    await page.locator('input#Password').fill(testUser.password);
+    await page.locator('.button-1.login-button').click();
+    await page.waitForLoadState('networkidle');
+    
     await expect(page).toHaveURL('/');
     await expect(page.locator('a.ico-logout')).toBeVisible();
-    await expect(page.locator('.account')).toContainText(testUser.email);
-    
-    // Vérifier que le lien "Log in" n'est plus visible
+    await expect(page.locator('.account').first()).toContainText(testUser.email);
     await expect(page.locator('a.ico-login')).not.toBeVisible();
     
     console.log(`✅ Connexion réussie avec: ${testUser.email}`);
   });
 
   test('Test 4: Connexion utilisateur - Cas non passant (mot de passe incorrect) ❌', async ({ page }) => {
+    // Créer un compte pour ce test
+    const userData = generateUserData();
+    
+    await page.goto('/register');
+    await page.locator('input#gender-male').check();
+    await page.locator('input#FirstName').fill(userData.firstName);
+    await page.locator('input#LastName').fill(userData.lastName);
+    await page.locator('input#Email').fill(userData.email);
+    await page.locator('input#Password').fill(userData.password);
+    await page.locator('input#ConfirmPassword').fill(userData.password);
+    await page.locator('input#register-button').click();
+    await expect(page.locator('.result')).toContainText('Your registration completed');
+    await page.locator('.button-1.register-continue-button').click();
+    
+    // Se déconnecter
+    await page.locator('a.ico-logout').click();
+    await page.waitForLoadState('networkidle');
+    
+    // Tester avec un mauvais mot de passe
     await page.goto('/login');
-    
-    // Remplir avec un mauvais mot de passe
-    await page.locator('input#Email').fill(testUser.email);
+    await page.locator('input#Email').fill(userData.email);
     await page.locator('input#Password').fill('MauvaisMotDePasse123');
-    
-    // Tenter de se connecter
     await page.locator('.button-1.login-button').click();
     
     // Vérifier le message d'erreur
@@ -86,8 +101,19 @@ test.describe('Tests de connexion et déconnexion', () => {
   });
 
   test('Test 5: Déconnexion utilisateur - Cas passant ✅', async ({ page }) => {
-    // D'abord se connecter
-    await login(page, testUser.email, testUser.password);
+    // Créer un compte pour ce test
+    const userData = generateUserData();
+    
+    await page.goto('/register');
+    await page.locator('input#gender-male').check();
+    await page.locator('input#FirstName').fill(userData.firstName);
+    await page.locator('input#LastName').fill(userData.lastName);
+    await page.locator('input#Email').fill(userData.email);
+    await page.locator('input#Password').fill(userData.password);
+    await page.locator('input#ConfirmPassword').fill(userData.password);
+    await page.locator('input#register-button').click();
+    await expect(page.locator('.result')).toContainText('Your registration completed');
+    await page.locator('.button-1.register-continue-button').click();
     
     // Vérifier que nous sommes connectés
     await expect(page.locator('a.ico-logout')).toBeVisible();
