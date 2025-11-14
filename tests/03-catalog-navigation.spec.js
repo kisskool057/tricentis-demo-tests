@@ -1,14 +1,8 @@
 const { test, expect } = require('../test-fixtures');
-const { markTestStart, markTestResult } = require('../utils/browserstack');
 
 test.describe('Tests de parcours du catalogue', () => {
 
-  test.beforeEach(async ({ page }, testInfo) => {
-    await markTestStart(page, testInfo);
-  });
-
-  test.afterEach(async ({ page }, testInfo) => {
-    await markTestResult(page, testInfo);
+  test.afterEach(async ({ page }) => {
     try { await page.context().close(); } catch (e) {}
   });
 

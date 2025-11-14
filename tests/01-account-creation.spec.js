@@ -1,14 +1,8 @@
 const { test, expect } = require('../test-fixtures');
 const { generateUserData } = require('../utils/helpers');
-const { markTestStart, markTestResult } = require('../utils/browserstack');
 
 test.describe('Tests de création de compte', () => {
-  test.beforeEach(async ({ page }, testInfo) => {
-    await markTestStart(page, testInfo);
-  });
-
-  test.afterEach(async ({ page }, testInfo) => {
-    await markTestResult(page, testInfo);
+  test.afterEach(async ({ page }) => {
     // Fermer le context (ferme la fenêtre du navigateur pour ce test)
     try {
       await page.context().close();

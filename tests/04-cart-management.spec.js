@@ -1,16 +1,13 @@
 const { test, expect } = require('../test-fixtures');
 const { wait, clearCart, getCartItemCount, addProductToCart } = require('../utils/helpers');
-const { markTestStart, markTestResult } = require('../utils/browserstack');
 
 test.describe('Tests de gestion du panier', () => {
 
-  test.afterEach(async ({ page }, testInfo) => {
-    await markTestResult(page, testInfo);
+  test.afterEach(async ({ page }) => {
     try { await page.context().close(); } catch (e) {}
   });
 
-  test.beforeEach(async ({ page }, testInfo) => {
-    await markTestStart(page, testInfo);
+  test.beforeEach(async ({ page }) => {
     // Vider le panier avant chaque test
     await clearCart(page);
   });

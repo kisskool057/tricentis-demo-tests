@@ -1,12 +1,10 @@
 const { test, expect } = require('../test-fixtures');
 const { createAccount, login, clearCart, wait, addProductToCart } = require('../utils/helpers');
-const { markTestStart, markTestResult } = require('../utils/browserstack');
 
 test.describe('Tests de passage de commande', () => {
   let testUser;
 
-  test.afterEach(async ({ page }, testInfo) => {
-    await markTestResult(page, testInfo);
+  test.afterEach(async ({ page }) => {
     try { await page.context().close(); } catch (e) {}
   });
 
@@ -19,8 +17,7 @@ test.describe('Tests de passage de commande', () => {
     console.log(`✅ Compte créé pour les tests de commande: ${testUser.email}`);
   });
 
-  test.beforeEach(async ({ page }, testInfo) => {
-    await markTestStart(page, testInfo);
+  test.beforeEach(async ({ page }) => {
     // Se connecter et vider le panier avant chaque test
     await login(page, testUser.email, testUser.password);
     await clearCart(page);

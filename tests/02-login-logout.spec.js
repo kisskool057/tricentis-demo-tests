@@ -1,16 +1,10 @@
 const { test, expect } = require('../test-fixtures');
 const { generateUserData, login, logout } = require('../utils/helpers');
-const { markTestStart, markTestResult } = require('../utils/browserstack');
 
 test.describe('Tests de connexion et déconnexion', () => {
   let testUser;
 
-  test.beforeEach(async ({ page }, testInfo) => {
-    await markTestStart(page, testInfo);
-  });
-
-  test.afterEach(async ({ page }, testInfo) => {
-    await markTestResult(page, testInfo);
+  test.afterEach(async ({ page }) => {
     try {
       await page.context().close();
     } catch (e) {}
