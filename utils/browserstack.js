@@ -10,11 +10,11 @@ function getTitlePathArray(testInfo) {
   try {
     if (typeof testInfo.titlePath === 'function') return testInfo.titlePath();
     if (Array.isArray(testInfo.titlePath)) return testInfo.titlePath;
-    if (Array.isArray(testInfo.titlePath && testInfo.titlePath())) return testInfo.titlePath();
   } catch (e) {
     // ignore
   }
   // Fallbacks
+  if (typeof testInfo.titlePath === 'string') return [testInfo.titlePath];
   if (typeof testInfo.title === 'string') return [testInfo.title];
   return ['(unknown)'];
 }
@@ -28,7 +28,10 @@ function formatTestName(testInfo) {
 
 async function sendExecutorCommand(page, action, args) {
   try {
-    await page.evaluate(() => {}, `browserstack_executor: ${JSON.stringify({ action, arguments: args })}`);
+    const payload = `browserstack_executor: ${JSON.stringify({ action, arguments: args })}`;
+    // log the action name (not secrets) to help debugging
+    console.log(`[BrowserStack] executor -> ${action}`);
+    await page.evaluate(() => {}, payload);
   } catch (error) {
     // Ne pas interrompre le test si BrowserStack n'est pas disponible
     console.warn(`[BrowserStack] ${action} failed: ${error.message}`);
