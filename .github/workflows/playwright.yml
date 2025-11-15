@@ -165,7 +165,7 @@ jobs:
         BROWSERSTACK_BUILD_NAME: "GitHub Actions #${{ github.run_number }} - ${{ github.ref_name }} - iphone15"
         BS_DEVICE: "iPhone 15 Pro Max"
         BS_OS_VERSION: "17"
-        BS_BROWSER: "chromium"
+        BS_BROWSER: "chrome"
         BS_WORKERS: "3"
         CI: true
       continue-on-error: true
