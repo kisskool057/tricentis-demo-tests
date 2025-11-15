@@ -40,7 +40,7 @@ const mobileCapabilities = {
   osVersion: process.env.BS_OS_VERSION || '17',
 
   // Navigateur mobile (Safari par défaut sur iOS)
-  browser: process.env.BS_BROWSER || 'chrome',
+  browser: process.env.BS_BROWSER || 'safari',
   // Spécifier que l'on utilise un vrai appareil mobile
   realMobile: 'true',
 
