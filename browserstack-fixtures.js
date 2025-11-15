@@ -46,7 +46,9 @@ const test = base.test.extend({
   context: async ({}, use, testInfo) => {
     if (!isBrowserStackRun()) {
       // Mode local: utiliser le contexte par défaut de Playwright
-      const browser = await chromium.launch({ headless: false });
+      // Utiliser headless:true sur CI, headed localement
+      const isCI = process.env.CI === 'true';
+      const browser = await chromium.launch({ headless: isCI });
       const context = await browser.newContext();
       await use(context);
       await context.close();
@@ -117,14 +119,16 @@ const test = base.test.extend({
       }
     } catch (error) {
       console.error(`[BrowserStack] Error in session ${sessionId}:`, error.message);
-      // Toujours appeler use() même en cas d'erreur pour éviter "use() was not called"
-      if (!context) {
-        // Créer un contexte fallback local si la connexion BrowserStack échoue
-        const localBrowser = await chromium.launch({ headless: false });
-        context = await localBrowser.newContext();
-        console.warn(`[BrowserStack] Fallback to local browser due to connection error`);
+      console.error(`[BrowserStack] Connection failed. Ensure BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY are valid.`);
+      
+      // Nettoyer les ressources avant de lancer l'erreur
+      if (browser) {
+        try { await browser.close(); } catch (e) {}
       }
-      throw error; // Re-throw pour marquer le test comme failed
+      
+      // Ne pas utiliser use() en cas d'échec de connexion BrowserStack
+      // Cela marquera le test comme failed correctement
+      throw new Error(`BrowserStack connection failed: ${error.message}`);
     } finally {
       // Nettoyage
       if (context) {
