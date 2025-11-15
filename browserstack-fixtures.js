@@ -8,21 +8,25 @@ const { chromium } = require('playwright');
 const bsConfig = require('./browserstack.config');
 const cp = require('child_process');
 
+// Compteur global pour rendre chaque session unique
+let sessionCounter = 0;
+
 // Vérifie si BrowserStack est configuré
 const isBrowserStackRun = () => {
   return Boolean(bsConfig.username && bsConfig.accessKey);
 };
 
-// Formatte le nom complet du test
-const formatTestName = (testInfo) => {
+// Formatte le nom complet du test avec un ID unique
+const formatTestName = (testInfo, sessionId) => {
   const titlePath = Array.isArray(testInfo.titlePath) 
     ? testInfo.titlePath 
     : typeof testInfo.titlePath === 'function' 
       ? testInfo.titlePath() 
       : [testInfo.title || 'Unknown Test'];
   
-  // Enlève le nom du fichier (premier élément)
-  return titlePath.slice(1).join(' › ');
+  // Enlève le nom du fichier (premier élément) et ajoute un ID unique
+  const testName = titlePath.slice(1).join(' › ');
+  return `[${sessionId}] ${testName}`;
 };
 
 // Envoie une commande à l'executor BrowserStack
@@ -30,8 +34,9 @@ const sendBrowserStackCommand = async (page, action, args) => {
   try {
     const payload = `browserstack_executor: ${JSON.stringify({ action, arguments: args })}`;
     await page.evaluate(() => {}, payload);
+    console.log(`[BrowserStack] ${action} executed successfully`);
   } catch (error) {
-    // Ignore silencieusement les erreurs pour ne pas interrompre les tests
+    console.warn(`[BrowserStack] ${action} failed:`, error.message);
   }
 };
 
@@ -51,7 +56,8 @@ const test = base.test.extend({
 
     // Mode BrowserStack: créer une session dédiée pour ce test
     const clientPlaywrightVersion = cp.execSync('npx playwright --version').toString().trim().split(' ')[1];
-    const testName = formatTestName(testInfo);
+    const sessionId = `S${++sessionCounter}`;
+    const testName = formatTestName(testInfo, sessionId);
     
     const caps = {
       browser: bsConfig.capabilities.browser,
@@ -75,31 +81,55 @@ const test = base.test.extend({
     
     let browser;
     let context;
+    let page;
     
     try {
+      console.log(`[BrowserStack] Connecting session ${sessionId} for test: ${testInfo.title}`);
+      
       // Connexion à BrowserStack via CDP
       browser = await chromium.connectOverCDP(wsEndpoint);
       context = browser.contexts()[0] || await browser.newContext();
+      page = context.pages()[0] || await context.newPage();
+      
+      // Attendre que la page soit prête
+      await page.waitForTimeout(1000);
       
       await use(context);
       
       // Récupérer le statut du test pour la mise à jour
-      const page = context.pages()[0];
-      if (page) {
+      console.log(`[BrowserStack] Test ${sessionId} finished with status: ${testInfo.status}`);
+      
+      if (page && !page.isClosed()) {
         const isExpected = testInfo.status === 'passed' || testInfo.status === testInfo.expectedStatus;
         const status = isExpected ? 'passed' : 'failed';
         const reason = testInfo.error?.message?.slice(0, 250) || 
           (status === 'passed' ? 'Test passed successfully' : `Test ${testInfo.status}`);
         
+        console.log(`[BrowserStack] Setting status to: ${status}`);
         await sendBrowserStackCommand(page, 'setSessionStatus', { status, reason });
+        
+        // Petite pause pour s'assurer que le statut est envoyé
+        await page.waitForTimeout(500);
       }
+    } catch (error) {
+      console.error(`[BrowserStack] Error in session ${sessionId}:`, error.message);
     } finally {
       // Nettoyage
       if (context) {
-        try { await context.close(); } catch (e) {}
+        try { 
+          await context.close(); 
+          console.log(`[BrowserStack] Context closed for ${sessionId}`);
+        } catch (e) {
+          console.warn(`[BrowserStack] Error closing context:`, e.message);
+        }
       }
       if (browser) {
-        try { await browser.close(); } catch (e) {}
+        try { 
+          await browser.close(); 
+          console.log(`[BrowserStack] Browser closed for ${sessionId}`);
+        } catch (e) {
+          console.warn(`[BrowserStack] Error closing browser:`, e.message);
+        }
       }
     }
   },

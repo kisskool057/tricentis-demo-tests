@@ -10,7 +10,9 @@
     "grep": {},
     "grepInvert": null,
     "maxFailures": 0,
-    "metadata": {},
+    "metadata": {
+      "actualWorkers": 1
+    },
     "preserveOutput": "always",
     "reporter": [
       [
@@ -44,7 +46,9 @@
         "outputDir": "C:/Users/alexa/OneDrive/Documents/VSCode/tricentis-demo-tests/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 1
+        },
         "id": "",
         "name": "",
         "testDir": "C:/Users/alexa/OneDrive/Documents/VSCode/tricentis-demo-tests/tests",
@@ -64,451 +68,6 @@
   },
   "suites": [
     {
-      "title": "01-account-creation.spec.js",
-      "file": "01-account-creation.spec.js",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Tests de création de compte",
-          "file": "01-account-creation.spec.js",
-          "line": 4,
-          "column": 6,
-          "specs": [
-            {
-              "title": "Test 1: Création de compte utilisateur - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "c1f22c58c4ae500731c1-587197b1d74ef5d5c4bb",
-              "file": "01-account-creation.spec.js",
-              "line": 14,
-              "column": 3
-            },
-            {
-              "title": "Test 2: Création de compte - Cas non passant (email invalide) ❌",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "c1f22c58c4ae500731c1-fa3e862771106602b348",
-              "file": "01-account-creation.spec.js",
-              "line": 53,
-              "column": 3
-            },
-            {
-              "title": "Test 2 bis: Création de compte - Cas non passant (mots de passe différents) ❌",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "c1f22c58c4ae500731c1-af8373007069854e8c12",
-              "file": "01-account-creation.spec.js",
-              "line": 78,
-              "column": 3
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "02-login-logout.spec.js",
-      "file": "02-login-logout.spec.js",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Tests de connexion et déconnexion",
-          "file": "02-login-logout.spec.js",
-          "line": 4,
-          "column": 6,
-          "specs": [
-            {
-              "title": "Test 3: Connexion utilisateur - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "91bded27fd2fcd69208f-73583f9a1d062a229281",
-              "file": "02-login-logout.spec.js",
-              "line": 13,
-              "column": 3
-            },
-            {
-              "title": "Test 4: Connexion utilisateur - Cas non passant (mot de passe incorrect) ❌",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "91bded27fd2fcd69208f-f3e6e5179a8687088d26",
-              "file": "02-login-logout.spec.js",
-              "line": 57,
-              "column": 3
-            },
-            {
-              "title": "Test 4 bis: Connexion - Cas non passant (email inexistant) ❌",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "91bded27fd2fcd69208f-2b2fee1e765ee415d3bb",
-              "file": "02-login-logout.spec.js",
-              "line": 95,
-              "column": 3
-            },
-            {
-              "title": "Test 5: Déconnexion utilisateur - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "91bded27fd2fcd69208f-694d65b4b8a991a0da59",
-              "file": "02-login-logout.spec.js",
-              "line": 109,
-              "column": 3
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "03-catalog-navigation.spec.js",
-      "file": "03-catalog-navigation.spec.js",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Tests de parcours du catalogue",
-          "file": "03-catalog-navigation.spec.js",
-          "line": 3,
-          "column": 6,
-          "specs": [
-            {
-              "title": "Test 6: Parcours du catalogue et visualisation de produit - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "dbcaf432440ca65ce745-f36ee925507a321a0af6",
-              "file": "03-catalog-navigation.spec.js",
-              "line": 9,
-              "column": 3
-            },
-            {
-              "title": "Test 6 bis: Navigation entre plusieurs catégories - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "dbcaf432440ca65ce745-53458459ebbf51c771d9",
-              "file": "03-catalog-navigation.spec.js",
-              "line": 52,
-              "column": 3
-            },
-            {
-              "title": "Test 6 ter: Recherche de produits - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "dbcaf432440ca65ce745-959d0ce427fa3b1619e4",
-              "file": "03-catalog-navigation.spec.js",
-              "line": 107,
-              "column": 3
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "04-cart-management.spec.js",
-      "file": "04-cart-management.spec.js",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Tests de gestion du panier",
-          "file": "04-cart-management.spec.js",
-          "line": 4,
-          "column": 6,
-          "specs": [
-            {
-              "title": "Test 7: Ajout d'un produit au panier - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "939d1966a546f5a52b56-1a0c0c77fb918a4bebd5",
-              "file": "04-cart-management.spec.js",
-              "line": 15,
-              "column": 3
-            },
-            {
-              "title": "Test 8: Ajout de plusieurs produits au panier - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "939d1966a546f5a52b56-fcaa805894241aab9e92",
-              "file": "04-cart-management.spec.js",
-              "line": 57,
-              "column": 3
-            },
-            {
-              "title": "Test 9: Modification de la quantité dans le panier - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "939d1966a546f5a52b56-a9dccc50c74967570ff4",
-              "file": "04-cart-management.spec.js",
-              "line": 94,
-              "column": 3
-            },
-            {
-              "title": "Test 9 bis: Suppression d'un produit du panier - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "939d1966a546f5a52b56-38ea5562d1204ae8423b",
-              "file": "04-cart-management.spec.js",
-              "line": 132,
-              "column": 3
-            },
-            {
-              "title": "Test 9 ter: Vider complètement le panier - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "939d1966a546f5a52b56-a69f078e48f81c39359c",
-              "file": "04-cart-management.spec.js",
-              "line": 161,
-              "column": 3
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "05-order-checkout.spec.js",
-      "file": "05-order-checkout.spec.js",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Tests de passage de commande",
-          "file": "05-order-checkout.spec.js",
-          "line": 4,
-          "column": 6,
-          "specs": [
-            {
-              "title": "Test 10: Passage de commande complet - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "6df3b02bf877ae574b17-77b830aa9f01c856557a",
-              "file": "05-order-checkout.spec.js",
-              "line": 26,
-              "column": 3
-            },
-            {
-              "title": "Test 10 bis: Tentative de checkout sans accepter les conditions - Cas non passant ❌",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "6df3b02bf877ae574b17-072d49f104de1f365c38",
-              "file": "05-order-checkout.spec.js",
-              "line": 107,
-              "column": 3
-            },
-            {
-              "title": "Test 10 ter: Commande avec plusieurs produits - Cas passant ✅",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 90000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "",
-                  "projectName": "",
-                  "results": [],
-                  "status": "skipped"
-                }
-              ],
-              "id": "6df3b02bf877ae574b17-2a36b5ffedfb036169b2",
-              "file": "05-order-checkout.spec.js",
-              "line": 144,
-              "column": 3
-            }
-          ]
-        }
-      ]
-    },
-    {
       "title": "99-sanity.spec.js",
       "file": "99-sanity.spec.js",
       "column": 0,
@@ -525,8 +84,22 @@
               "expectedStatus": "passed",
               "projectId": "",
               "projectName": "",
-              "results": [],
-              "status": "skipped"
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5730,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-11-15T14:44:48.821Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
             }
           ],
           "id": "945914a90f8c755c99e7-2898474a5cd0b55b41c1",
@@ -539,10 +112,10 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-15T14:34:18.785Z",
-    "duration": 50.06599999999992,
-    "expected": 0,
-    "skipped": 19,
+    "startTime": "2025-11-15T14:44:48.214Z",
+    "duration": 7383.049,
+    "expected": 1,
+    "skipped": 0,
     "unexpected": 0,
     "flaky": 0
   }
