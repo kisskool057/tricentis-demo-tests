@@ -43,6 +43,7 @@ module.exports = {
 
   // Nom du projet dans BrowserStack
   projectName: 'Tricentis Demo Web Shop',
+  testObservability: true,
 
   // Capacités desktop (mode unique)
   capabilities,
