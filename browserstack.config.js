@@ -37,10 +37,10 @@ const desktopCapabilities = {
 const mobileCapabilities = {
   // Nom de l'appareil et version d'OS
   deviceName: process.env.BS_DEVICE || 'iPhone 15 Pro Max',
-  osVersion: process.env.BS_OS_VERSION || '18',
+  osVersion: process.env.BS_OS_VERSION || '17',
 
   // Navigateur mobile (Safari par défaut sur iOS)
-  browser: process.env.BS_BROWSER || 'safari',
+  browser: process.env.BS_BROWSER || 'chrome',
   // Spécifier que l'on utilise un vrai appareil mobile
   realMobile: 'true',
 

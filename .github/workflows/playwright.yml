@@ -157,7 +157,7 @@ jobs:
     - name: Install Playwright (chromium driver)
       run: npx playwright install chromium
 
-    - name: Run tests on BrowserStack (iPhone 15 Pro Max / iOS 18)
+    - name: Run tests on BrowserStack (iPhone 15 Pro Max / iOS 17)
       run: npx playwright test --config=playwright.config.browserstack.js
       env:
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
@@ -166,7 +166,7 @@ jobs:
         BS_DEVICE: "iPhone 15 Pro Max"
         BS_OS_VERSION: "17"
         BS_BROWSER: "chrome"
-        BS_WORKERS: "3"
+        BS_WORKERS: "5"
         CI: true
       continue-on-error: true
 
