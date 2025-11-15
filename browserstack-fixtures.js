@@ -119,8 +119,8 @@ const test = base.test.extend({
         `[BrowserStack] Connecting session ${sessionId} for test: ${testInfo.title}`
       );
 
-      // Connexion en utilisant le protocole Playwright
-      browser = await chromium.connect({ wsEndpoint });
+      // Connexion via le CDP BrowserStack (méthode supportée officiellement)
+      browser = await chromium.connectOverCDP(wsEndpoint);
 
       // Récupérer ou créer le contexte en appliquant les options du projet Playwright
       const contexts = browser.contexts();
