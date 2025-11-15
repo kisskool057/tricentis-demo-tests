@@ -74,9 +74,9 @@ jobs:
         BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
         BROWSERSTACK_BUILD_NAME: "GitHub Actions #${{ github.run_number }} - ${{ github.ref_name }}"
         BS_OS: "Windows"
-        BS_OS_VERSION: "11"
+        BS_OS_VERSION: "10"
         BS_BROWSER: "chrome"
-        BS_BROWSER_VERSION: "latest"
+        BS_BROWSER_VERSION: "135"
         BS_WORKERS: "5"
         CI: true
       continue-on-error: true
