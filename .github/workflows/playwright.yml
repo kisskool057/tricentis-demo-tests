@@ -137,45 +137,4 @@ jobs:
           test-results.json
         retention-days: 30
 
-  # 📱 BrowserStack - iPhone 15 Pro Max / iOS 17 (Safari)
-  test-browserstack-iphone15:
-    timeout-minutes: 90
-    runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 18
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Install Playwright (chromium driver)
-      run: npx playwright install chromium
-
-    - name: Run tests on BrowserStack (iPhone 15 Pro Max / iOS 17)
-      run: npx playwright test --config=playwright.config.browserstack.js
-      env:
-        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-        BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-        BROWSERSTACK_BUILD_NAME: "GitHub Actions #${{ github.run_number }} - ${{ github.ref_name }} - iphone15"
-        BS_DEVICE: "iPhone 15 Pro Max"
-        BS_OS_VERSION: "17"
-        BS_BROWSER: "safari"
-        BS_WORKERS: "5"
-        CI: true
-      continue-on-error: true
-
-    - name: Upload BrowserStack test results (iPhone 15 Pro Max)
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: browserstack-report-iphone15
-        path: |
-          playwright-report/
-          test-results.json
-        retention-days: 30

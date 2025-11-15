@@ -3,9 +3,7 @@
  *
  * Cette version gère deux modes d'exécution :
  * - Mode local : si aucune clé BrowserStack n'est trouvée, on lance Chromium en local.
- * - Mode BrowserStack : une session BrowserStack est créée par test, avec détection
- *   automatique du type de plateforme (desktop ou mobile) en fonction des capacités
- *   déclarées dans browserstack.config.js.
+ * - Mode BrowserStack : une session BrowserStack desktop est créée par test.
  */
 
 const base = require('@playwright/test');
@@ -82,7 +80,7 @@ const test = base.test.extend({
     const sessionId = `S${++sessionCounter}`;
     const testName = formatTestName(testInfo, sessionId);
 
-    // Base des capabilities commune aux sessions desktop et mobile
+    // Base des capabilities communes aux sessions desktop
     const baseCaps = {
       project: bsConfig.projectName,
       build: bsConfig.buildName,
@@ -95,31 +93,18 @@ const test = base.test.extend({
       'browserstack.networkLogs': bsConfig.capabilities['browserstack.networkLogs'],
       'browserstack.debug': bsConfig.capabilities['browserstack.debug'],
       'browserstack.video': bsConfig.capabilities['browserstack.video'],
-      'browserstack.timezone': bsConfig.capabilities['browserstack.timezone'],
       // Versions de Playwright (client et serveur)
       'browserstack.playwrightVersion': '1.latest',
       'client.playwrightVersion': clientPlaywrightVersion,
     };
 
-    // Détermine si l'on utilise un appareil mobile (deviceName défini)
-    let caps;
-    if (Object.prototype.hasOwnProperty.call(bsConfig.capabilities, 'deviceName')) {
-      caps = {
-        ...baseCaps,
-        deviceName: bsConfig.capabilities.deviceName,
-        osVersion: bsConfig.capabilities.osVersion,
-        browser: bsConfig.capabilities.browser || 'safari',
-        realMobile: 'true',
-      };
-    } else {
-      caps = {
-        ...baseCaps,
-        os: bsConfig.capabilities.os,
-        os_version: bsConfig.capabilities.osVersion,
-        browser: bsConfig.capabilities.browser,
-        browser_version: bsConfig.capabilities.browserVersion,
-      };
-    }
+    const caps = {
+      ...baseCaps,
+      os: bsConfig.capabilities.os,
+      os_version: bsConfig.capabilities.osVersion,
+      browser: bsConfig.capabilities.browser,
+      browser_version: bsConfig.capabilities.browserVersion,
+    };
 
     // Construction de l'URL WebSocket pour se connecter à BrowserStack
     const wsEndpoint = `wss://cdp.browserstack.com/playwright?caps=${encodeURIComponent(
