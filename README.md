@@ -1,3 +1,5 @@
+[![Playwright Tests](https://github.com/AlexThibaud1976/tricentis-demo-tests/actions/workflows/playwright.yml/badge.svg)](https://github.com/AlexThibaud1976/tricentis-demo-tests/actions/workflows/playwright.yml)
+
 # 🧪 Suite de Tests Automatisés - Demo Web Shop Tricentis
 
 Suite complète de tests end-to-end automatisés avec Playwright pour le site de démonstration [Demo Web Shop Tricentis](https://demowebshop.tricentis.com/).
