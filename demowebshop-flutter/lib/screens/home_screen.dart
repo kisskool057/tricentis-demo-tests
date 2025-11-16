@@ -70,10 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             )
           else
-            PopupMenuButton(
+            PopupMenuButton<String>(
               icon: const Icon(Icons.account_circle),
-              itemBuilder: (context) => [
-                PopupMenuItem(
+              itemBuilder: (context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
                   enabled: false,
                   child: Semantics(
                     label: 'user-email',
@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const PopupMenuDivider(),
-                PopupMenuItem(
+                PopupMenuItem<String>(
                   value: 'logout',
                   child: Semantics(
                     label: 'ico-logout',

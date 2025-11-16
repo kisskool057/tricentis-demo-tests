@@ -17,6 +17,7 @@ dependencies:
   go_router: ^13.0.0
 
   # Local Storage & Database
+  sqflite_common: ^2.5.4
   sqflite_common_ffi_web: ^0.4.0+2
   shared_preferences: ^2.2.2
   path_provider: ^2.1.1
