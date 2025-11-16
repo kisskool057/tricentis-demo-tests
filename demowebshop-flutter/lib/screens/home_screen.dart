@@ -84,6 +84,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const PopupMenuDivider(),
+                // TODO: Ajouter champ isAdmin dans User pour activer l'admin
+                // if (authProvider.currentUser?.isAdmin ?? false)
+                //   PopupMenuItem<String>(
+                //     value: 'admin',
+                //     child: const Row(
+                //       children: [
+                //         Icon(Icons.admin_panel_settings),
+                //         SizedBox(width: 8),
+                //         Text('Administration'),
+                //       ],
+                //     ),
+                //   ),
+                // if (authProvider.currentUser?.isAdmin ?? false)
+                //   const PopupMenuDivider(),
                 PopupMenuItem<String>(
                   value: 'logout',
                   child: Semantics(
@@ -102,6 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
               onSelected: (value) {
                 if (value == 'logout') {
                   authProvider.logout();
+                } else if (value == 'admin') {
+                  Navigator.pushNamed(context, '/admin');
                 }
               },
             ),

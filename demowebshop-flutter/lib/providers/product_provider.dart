@@ -40,20 +40,25 @@ class ProductProvider with ChangeNotifier {
 
   /// Charge tous les produits depuis la base de données
   Future<void> loadProducts() async {
+    print('📦 ProductProvider: Début du chargement des produits...');
     _isLoading = true;
     notifyListeners();
 
     try {
+      print('🔍 ProductProvider: Appel de getProducts()...');
       _allProducts = await _dbService.getProducts();
       _filteredProducts = _allProducts;
-    } catch (e) {
-      debugPrint('Erreur lors du chargement des produits: $e');
+      print('✅ ProductProvider: ${_allProducts.length} produits chargés');
+    } catch (e, stackTrace) {
+      print('❌ ProductProvider: Erreur lors du chargement des produits: $e');
+      print('📋 Stack trace: $stackTrace');
       _allProducts = [];
       _filteredProducts = [];
     }
 
     _isLoading = false;
     notifyListeners();
+    print('🏁 ProductProvider: Chargement terminé (isLoading=$_isLoading)');
   }
 
   /// Filtre les produits par catégorie

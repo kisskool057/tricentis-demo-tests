@@ -33,7 +33,7 @@ class Product {
       price: (json['price'] as num).toDouble(),
       category: json['category'] as String,
       imageUrl: json['imageUrl'] as String?,
-      isAvailable: json['isAvailable'] as bool? ?? true,
+      isAvailable: json['isAvailable'] == 1 || json['isAvailable'] == true,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }

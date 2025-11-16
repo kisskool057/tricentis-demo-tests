@@ -36,10 +36,9 @@ RUN flutter pub get
 # Copie de tout le code source
 COPY . .
 
-# Copier les fichiers worker SQLite nécessaires pour le web
-# Ces fichiers sont requis par sqflite_common_ffi_web
-RUN wget -q -O web/sqflite_sw.js https://raw.githubusercontent.com/tekartik/sqflite/master/packages_web/sqflite_common_ffi_web/web/sqflite_sw.js && \
-    wget -q -O web/sqlite3.wasm https://raw.githubusercontent.com/tekartik/sqflite/master/packages_web/sqflite_common_ffi_web/web/sqlite3.wasm
+# Copier les fichiers worker SQLite depuis le package sqflite_common_ffi_web
+# Exécuter la commande de setup officielle pour générer les binaires
+RUN dart run sqflite_common_ffi_web:setup --verbose
 
 # Build de l'application web en mode release
 # Utiliser html renderer pour plus de compatibilité

@@ -6,6 +6,7 @@ import '../models/product.dart';
 import '../models/cart_item.dart';
 import '../models/order.dart';
 import '../models/address.dart';
+import '../models/user.dart';
 
 /// Service de gestion de la base de données SQLite
 ///
@@ -28,19 +29,36 @@ class DatabaseService {
 
   /// Initialise la base de données
   Future<Database> _initDB(String filePath) async {
-    // Pour le web, utiliser directement le factory FFI Web
-    final factory = databaseFactoryFfiWeb;
+    print('🔧 Initialisation de la base de données: $filePath');
+    
+    // Pour le web, créer une factory avec les options appropriées
+    // Le shared worker doit être explicitement spécifié
+    final factory = createDatabaseFactoryFfiWeb(
+      options: SqfliteFfiWebOptions(
+        sharedWorkerUri: Uri.parse('sqflite_sw.js'),
+      ),
+    );
+    print('✅ Factory créée avec shared worker: sqflite_sw.js');
 
     // Pour le web, on utilise juste le nom du fichier
     final path = filePath;
+    print('📂 Ouverture de la base: $path');
 
-    return await factory.openDatabase(
-      path,
-      options: OpenDatabaseOptions(
-        version: 1,
-        onCreate: _createDB,
-      ),
-    );
+    try {
+      final db = await factory.openDatabase(
+        path,
+        options: OpenDatabaseOptions(
+          version: 1,
+          onCreate: _createDB,
+        ),
+      );
+      print('✅ Base de données ouverte avec succès');
+      return db;
+    } catch (e, stackTrace) {
+      print('❌ Erreur lors de l\'ouverture de la base: $e');
+      print('📋 Stack trace: $stackTrace');
+      rethrow;
+    }
   }
 
   /// Crée toutes les tables de la base de données
@@ -240,9 +258,14 @@ class DatabaseService {
 
   /// Récupère tous les produits
   Future<List<Product>> getProducts() async {
+    print('🗄️ DatabaseService: Récupération de la base de données...');
     final db = await instance.database;
+    print('✅ DatabaseService: Base récupérée, exécution de la requête...');
     final result = await db.query('products', orderBy: 'name ASC');
-    return result.map((json) => Product.fromJson(json)).toList();
+    print('✅ DatabaseService: Requête terminée, ${result.length} produits trouvés');
+    final products = result.map((json) => Product.fromJson(json)).toList();
+    print('✅ DatabaseService: Conversion terminée');
+    return products;
   }
 
   /// Récupère les produits par catégorie
@@ -536,6 +559,146 @@ class DatabaseService {
       zipCode: json['zipCode'] as String,
       phoneNumber: json['phoneNumber'] as String,
       isDefault: (json['isDefault'] as int) == 1,
+    );
+  }
+
+  // ==================== MÉTHODES ADMIN ====================
+
+  /// Ajoute un nouveau produit
+  Future<void> addProduct(Product product) async {
+    final db = await instance.database;
+    await db.insert('products', product.toJson());
+  }
+
+  /// Met à jour un produit
+  Future<void> updateProduct(Product product) async {
+    final db = await instance.database;
+    await db.update(
+      'products',
+      product.toJson(),
+      where: 'id = ?',
+      whereArgs: [product.id],
+    );
+  }
+
+  /// Supprime un produit
+  Future<void> deleteProduct(String productId) async {
+    final db = await instance.database;
+    await db.delete(
+      'products',
+      where: 'id = ?',
+      whereArgs: [productId],
+    );
+  }
+
+  /// Récupère toutes les commandes
+  Future<List<Order>> getAllOrders() async {
+    final db = await instance.database;
+    final result = await db.query('orders', orderBy: 'createdAt DESC');
+    final orders = <Order>[];
+    for (final json in result) {
+      final order = await _orderFromJson(json);
+      orders.add(order);
+    }
+    return orders;
+  }
+
+  /// Construit un Order à partir d'un JSON avec relations
+  Future<Order> _orderFromJson(Map<String, dynamic> orderRow) async {
+    final db = await instance.database;
+    final orderId = orderRow['id'] as String;
+
+    // Récupérer les articles de la commande
+    final itemsResult = await db.rawQuery('''
+      SELECT
+        oi.id,
+        oi.quantity,
+        p.*
+      FROM order_items oi
+      INNER JOIN products p ON oi.productId = p.id
+      WHERE oi.orderId = ?
+    ''', [orderId]);
+
+    final items = itemsResult.map((row) {
+      final product = Product.fromJson(row);
+      return CartItem(
+        id: row['id'] as String,
+        product: product,
+        quantity: row['quantity'] as int,
+        addedAt: DateTime.parse(orderRow['createdAt'] as String),
+      );
+    }).toList();
+
+    // Récupérer les adresses
+    final billingAddress = await _getAddressById(orderRow['billingAddressId'] as String);
+    final shippingAddress = await _getAddressById(orderRow['shippingAddressId'] as String);
+
+    if (billingAddress == null || shippingAddress == null) {
+      throw Exception('Addresses not found for order $orderId');
+    }
+
+    return Order(
+      id: orderId,
+      userId: orderRow['userId'] as String,
+      items: items,
+      billingAddress: billingAddress,
+      shippingAddress: shippingAddress,
+      paymentMethod: PaymentMethod.values.firstWhere(
+        (e) => e.toString() == 'PaymentMethod.${orderRow['paymentMethod']}',
+      ),
+      shippingMethod: ShippingMethod.values.firstWhere(
+        (e) => e.toString() == 'ShippingMethod.${orderRow['shippingMethod']}',
+      ),
+      status: OrderStatus.values.firstWhere(
+        (e) => e.toString() == 'OrderStatus.${orderRow['status']}',
+      ),
+      subtotal: (orderRow['subtotal'] as num).toDouble(),
+      shippingCost: (orderRow['shippingCost'] as num).toDouble(),
+      tax: (orderRow['tax'] as num).toDouble(),
+      total: (orderRow['total'] as num).toDouble(),
+      createdAt: DateTime.parse(orderRow['createdAt'] as String),
+      deliveredAt: orderRow['deliveredAt'] != null
+          ? DateTime.parse(orderRow['deliveredAt'] as String)
+          : null,
+    );
+  }
+
+  /// Met à jour le statut d'une commande
+  Future<void> updateOrderStatus(String orderId, String status) async {
+    final db = await instance.database;
+    await db.update(
+      'orders',
+      {'status': status},
+      where: 'id = ?',
+      whereArgs: [orderId],
+    );
+  }
+
+  /// Récupère tous les utilisateurs
+  Future<List<User>> getAllUsers() async {
+    final db = await instance.database;
+    final result = await db.query('users', orderBy: 'createdAt DESC');
+    return result.map((json) => User.fromJson(json)).toList();
+  }
+
+  /// Met à jour un utilisateur
+  Future<void> updateUser(User user) async {
+    final db = await instance.database;
+    await db.update(
+      'users',
+      user.toJson(),
+      where: 'id = ?',
+      whereArgs: [user.id],
+    );
+  }
+
+  /// Supprime un utilisateur
+  Future<void> deleteUser(String userId) async {
+    final db = await instance.database;
+    await db.delete(
+      'users',
+      where: 'id = ?',
+      whereArgs: [userId],
     );
   }
 }

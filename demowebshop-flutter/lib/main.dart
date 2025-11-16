@@ -17,6 +17,10 @@ import 'screens/register_screen.dart';
 import 'screens/cart_screen.dart';
 import 'screens/checkout_screen.dart';
 import 'screens/order_confirmation_screen.dart';
+import 'screens/admin/admin_dashboard_screen.dart';
+import 'screens/admin/admin_products_screen.dart';
+import 'screens/admin/admin_orders_screen.dart';
+import 'screens/admin/admin_users_screen.dart';
 
 // Config
 import 'config/app_config.dart';
@@ -166,6 +170,10 @@ class DemoWebShopApp extends StatelessWidget {
           '/register': (context) => const RegisterScreen(),
           '/cart': (context) => const CartScreen(),
           '/checkout': (context) => const CheckoutScreen(),
+          '/admin': (context) => const AdminDashboardScreen(),
+          '/admin/products': (context) => const AdminProductsScreen(),
+          '/admin/orders': (context) => const AdminOrdersScreen(),
+          '/admin/users': (context) => const AdminUsersScreen(),
         },
 
         // Gestionnaire de routes pour les routes avec arguments
